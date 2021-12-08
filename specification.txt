@@ -1,0 +1,16 @@
+
+Posts - author, post
+Comments - postId, userWhoCommented, comment
+Likes - postId, userWhoLiked
+
+
+Users - name, email, password, date_created
+
+CanDeleteGuard
+
+AuthGuard (comment, like)
+
+.......
+Can Logout (get redirected to login)
+
+Send Onboarding Email to the user 
