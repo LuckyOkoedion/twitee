@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req, UseGuards, UseInterceptors, ClassSerializerInterceptor } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto, LoginDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -28,6 +28,7 @@ export class UserController {
   findAll() {
     return this.userService.findAll();
   }
+
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')

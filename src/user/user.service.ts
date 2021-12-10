@@ -113,7 +113,15 @@ export class UserService {
   async findAll(): Promise<User[]> {
 
     try {
-      return await this.theModel.findAll();
+      const result = await this.theModel.findAll();
+
+      // let serialized = result.map(value => {
+      //   let { password, ...clean } = value;
+      //   return clean;
+      // });
+      // return serialized;
+
+      return result;
     } catch (error) {
       throw new NotFoundException()
     }
@@ -122,12 +130,17 @@ export class UserService {
 
   async findOne(id: number): Promise<User> {
     try {
-      return await this.theModel.findOne({
+      const result = await this.theModel.findOne({
         where: {
           id,
         },
         include: [Post, Comment, Like]
-      })
+      });
+
+      return result;
+
+      // let { password, ...serialized } = result;
+      // return serialized;
     } catch (error) {
       throw new NotFoundException()
     }

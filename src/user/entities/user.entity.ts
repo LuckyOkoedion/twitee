@@ -2,6 +2,7 @@ import { Column, HasMany, Model, Table } from "sequelize-typescript";
 import { Post } from "src/post/entities/post.entity";
 import { Comment } from "src/comment/entities/comment.entity";
 import { Like } from "src/like/entities/like.entity";
+import { Exclude } from "class-transformer";
 
 @Table
 export class User extends Model<User> {
@@ -10,12 +11,12 @@ export class User extends Model<User> {
     @Column
     email: string
     @Column
-    password: string
+    password?: string
     @Column
     date_created: string
-    @HasMany(()=> Post)
+    @HasMany(() => Post)
     posts: Post[]
-    @HasMany(()=> Comment)
+    @HasMany(() => Comment)
     comments: Comment[]
     @HasMany(() => Like)
     likes: Like[]
