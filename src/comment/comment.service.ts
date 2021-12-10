@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { RequestWithUser } from 'src/request.interface';
+import { User } from 'src/user/entities/user.entity';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { Comment } from './entities/comment.entity';
@@ -32,7 +33,7 @@ export class CommentService {
   async findAll(): Promise<Comment[]> {
 
     try {
-      return await this.theModel.findAll();
+      return await this.theModel.findAll({ include: [User] });
     } catch (error) {
       throw new NotFoundException()
     }
@@ -44,7 +45,8 @@ export class CommentService {
       return await this.theModel.findOne({
         where: {
           id,
-        }
+        },
+        include: [User]
       })
     } catch (error) {
       throw new NotFoundException()
@@ -55,13 +57,13 @@ export class CommentService {
     try {
       const record = await this.findOne(id);
 
-      if(record.userWhoCommented === req.user.userId) {
-      await record.update(theUpdateDto);
-      return record;
+      if (record.userWhoCommented === req.user.userId) {
+        await record.update(theUpdateDto);
+        return record;
       } else {
         throw new BadRequestException("You do not have the permission to edit this comment");
       }
-      
+
     } catch (error) {
       throw new BadRequestException(error.message, "Update operation failed ! Check the request body parameters or check backend server")
     }
@@ -69,12 +71,12 @@ export class CommentService {
 
   async remove(id: number, req: RequestWithUser): Promise<void> {
     const record = await this.findOne(id);
-    if(record.userWhoCommented === req.user.userId) {
+    if (record.userWhoCommented === req.user.userId) {
       await record.destroy();
     } else {
       throw new BadRequestException("You do not have the permission to delelet this comment");
     }
-    
+
   }
 
 
