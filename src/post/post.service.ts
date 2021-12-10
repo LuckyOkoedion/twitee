@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { Comment } from 'src/comment/entities/comment.entity';
 import { Like } from 'src/like/entities/like.entity';
 import { RequestWithUser } from 'src/request.interface';
+import { User } from 'src/user/entities/user.entity';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { Post } from './entities/post.entity';
@@ -35,7 +36,7 @@ export class PostService {
   async findAll(): Promise<Post[]> {
 
     try {
-      return await this.theModel.findAll({ include: [Comment, Like] });
+      return await this.theModel.findAll({ include: [Comment, Like, User] });
     } catch (error) {
       throw new NotFoundException()
     }
@@ -48,7 +49,7 @@ export class PostService {
         where: {
           id,
         },
-        include: [Comment, Like]
+        include: [Comment, Like, User]
       })
     } catch (error) {
       throw new NotFoundException()

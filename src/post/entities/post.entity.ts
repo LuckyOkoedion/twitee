@@ -1,5 +1,5 @@
 import { DecimalDataType, TextDataType } from "sequelize/types";
-import { Column, DataType, Table, Model, HasMany, ForeignKey } from "sequelize-typescript";
+import { Column, DataType, Table, Model, HasMany, ForeignKey, BelongsTo } from "sequelize-typescript";
 import { Comment } from "src/comment/entities/comment.entity";
 import { Like } from "src/like/entities/like.entity";
 import { User } from "src/user/entities/user.entity";
@@ -15,5 +15,7 @@ export class Post extends Model<Post> {
     comments: Comment[]
     @HasMany(() => Like)
     likes: Like[]
+    @BelongsTo(() => User)
+    theAuthor: User
 
 }
