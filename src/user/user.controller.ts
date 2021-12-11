@@ -4,10 +4,11 @@ import { CreateUserDto, LoginDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { RequestWithUser } from 'src/request.interface';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { UserDetailResponseDto } from './dto/response.dto';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) { }
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
@@ -24,16 +25,49 @@ export class UserController {
     return this.userService.isTokenOkay(token);
   }
 
+  @UseInterceptors(ClassSerializerInterceptor)
   @Get()
-  findAll() {
-    return this.userService.findAll();
+  async findAll() {
+    let result = await this.userService.findAll();
+    let structured = result.map(valu => {
+      return new UserDetailResponseDto({
+        "id": valu.id,
+        "name": valu.name,
+        "email": valu.email,
+        "password": valu.password,
+        "date_created": valu.date_created,
+        "createdAt": valu.createdAt,
+        "updatedAt": valu.updatedAt,
+        "posts": valu.posts,
+        "comments": valu.comments,
+        "likes": valu.likes
+
+      })
+    });
+
+    return structured;
   }
 
 
   @UseGuards(JwtAuthGuard)
+  @UseInterceptors(ClassSerializerInterceptor)
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    let valu = await this.userService.findOne(+id);
+    return new UserDetailResponseDto({
+      "id": valu.id,
+      "name": valu.name,
+      "email": valu.email,
+      "password": valu.password,
+      "date_created": valu.date_created,
+      "createdAt": valu.createdAt,
+      "updatedAt": valu.updatedAt,
+      "posts": valu.posts,
+      "comments": valu.comments,
+      "likes": valu.likes
+    })
+
+
   }
 
   @UseGuards(JwtAuthGuard)

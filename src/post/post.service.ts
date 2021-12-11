@@ -36,7 +36,7 @@ export class PostService {
   async findAll(): Promise<Post[]> {
 
     try {
-      return await this.theModel.findAll({ include: [Comment, Like, User] });
+      return await this.theModel.findAll({ include: [Comment, Like] });
     } catch (error) {
       throw new NotFoundException()
     }

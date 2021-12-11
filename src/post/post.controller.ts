@@ -1,9 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req, UseGuards, ClassSerializerInterceptor, UseInterceptors } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { RequestWithUser } from 'src/request.interface';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { PostDetailResponseDto } from 'src/user/dto/response.dto';
 
 @Controller('post')
 export class PostController {
@@ -15,14 +16,17 @@ export class PostController {
     return this.postService.create(createPostDto, req);
   }
 
+
   @Get()
   findAll() {
     return this.postService.findAll();
   }
 
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.postService.findOne(+id);
+    
   }
 
   @UseGuards(JwtAuthGuard)

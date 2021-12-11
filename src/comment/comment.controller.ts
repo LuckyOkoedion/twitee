@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req, UseGuards, ClassSerializerInterceptor, UseInterceptors } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { RequestWithUser } from 'src/request.interface';
+import { CommentDetailResponseDto } from 'src/user/dto/response.dto';
 import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
@@ -15,13 +16,15 @@ export class CommentController {
     return this.commentService.create(createCommentDto, req);
   }
 
+
   @Get()
   findAll() {
     return this.commentService.findAll();
+    
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     return this.commentService.findOne(+id);
   }
 

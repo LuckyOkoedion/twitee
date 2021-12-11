@@ -33,7 +33,7 @@ export class CommentService {
   async findAll(): Promise<Comment[]> {
 
     try {
-      return await this.theModel.findAll({ include: [User] });
+      return await this.theModel.findAll();
     } catch (error) {
       throw new NotFoundException()
     }
@@ -45,8 +45,7 @@ export class CommentService {
       return await this.theModel.findOne({
         where: {
           id,
-        },
-        include: [User]
+        }
       })
     } catch (error) {
       throw new NotFoundException()

@@ -17,4 +17,4 @@ import { Comment } from './entities/comment.entity';
     CommentService
   ]
 })
-export class CommentModule {}
+export class CommentModule { }

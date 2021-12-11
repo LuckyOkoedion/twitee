@@ -17,4 +17,4 @@ import { Post } from './entities/post.entity';
     PostService
   ]
 })
-export class PostModule {}
+export class PostModule { }

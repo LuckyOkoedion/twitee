@@ -10,6 +10,7 @@ export class User extends Model<User> {
     name: string
     @Column
     email: string
+    @Exclude()
     @Column
     password?: string
     @Column
