@@ -49,7 +49,6 @@ export class UserController {
   }
 
 
-  @UseGuards(JwtAuthGuard)
   @UseInterceptors(ClassSerializerInterceptor)
   @Get(':id')
   async findOne(@Param('id') id: string) {
